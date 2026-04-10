@@ -172,3 +172,58 @@ outputs/
 - PDF export of the final guide
 - Direct booking links via Skyscanner / Booking.com APIs
 - User accounts to save and revisit past itineraries
+
+---
+
+## What I Learned
+
+This project was a deep dive into building real-world agentic AI systems — going far beyond a simple chatbot. Here are the key things I took away from it:
+
+### Multi-Agent Architecture
+I learned how to decompose a complex task (travel planning) into specialised roles — Planner, Researcher, and Writer — each with a focused responsibility. This taught me that giving an LLM one clear job produces far better results than asking a single prompt to do everything.
+
+### Hallucination Prevention by Design
+One of the hardest problems with LLMs is making things up. I tackled this structurally: the Writer agent is explicitly constrained to only use facts sourced from the Researcher. This separation of reasoning (Planner) from fact-finding (Researcher) from presentation (Writer) was a key architectural insight.
+
+### AutoGen Agent Framework
+I gained hands-on experience with Microsoft's **AutoGen** library (`autogen-agentchat`), learning how to:
+- Define `AssistantAgent` instances with custom system prompts
+- Compose agents into a `RoundRobinGroupChat` team
+- Use termination conditions (`TextMentionTermination`, `MaxMessageTermination`) to control when a pipeline stops
+- Build a factory pattern so each request gets fresh agent instances with clean conversation history
+
+### Streaming with Server-Sent Events (SSE)
+I learned how to stream live data from a Python backend to a browser using **Server-Sent Events**. This involved:
+- Yielding SSE-formatted chunks from a FastAPI `StreamingResponse`
+- Reading a streaming `fetch` response in JavaScript with a `ReadableStream` reader
+- Buffering incoming chunks to handle partial SSE events correctly
+
+### FastAPI for AI Backends
+I built a production-style REST API with **FastAPI** that acts as the bridge between the browser and the agent pipeline — handling requests, streaming responses, and serving static files.
+
+### Frontend Without a Framework
+I built the entire UI in **vanilla HTML, CSS, and JavaScript** — no React, no Vue. This forced me to think carefully about DOM manipulation, event handling, and state management from first principles. I used the `marked.js` library to render the final Markdown output in the browser.
+
+### Python Project Packaging
+I structured the project as a proper installable Python package using `setup.py` and `find_packages()`, learned how to manage a virtual environment, and understood why isolating dependencies matters for reproducibility.
+
+### Prompt Engineering
+Writing effective system prompts for each agent was an art in itself. I learned to be explicit about output format, constraints, and handoff points — for example, telling the Planner to never include prices (that's the Researcher's job) and telling the Writer to end with `TERMINATE` so the pipeline knows when to stop.
+
+---
+
+## Technologies Used
+
+| Technology | Purpose | What I Used It For |
+|---|---|---|
+| **Python 3.12** | Core language | Entire backend and agent logic |
+| **AutoGen (`autogen-agentchat`)** | Multi-agent framework | Defining agents, team orchestration, streaming |
+| **OpenAI GPT-4o** | Large Language Model | Powers all three agents |
+| **FastAPI** | Web framework | REST API, SSE streaming endpoint, static file serving |
+| **Uvicorn** | ASGI server | Running the FastAPI application |
+| **Pydantic** | Data validation | Request body models in the API |
+| **python-dotenv** | Config management | Loading API keys from `.env` securely |
+| **HTML5 / CSS3** | Frontend markup & styling | Responsive UI, CSS Grid layout, animations |
+| **Vanilla JavaScript** | Frontend logic | Fetch streaming, SSE parsing, DOM manipulation |
+| **marked.js** | Markdown rendering | Rendering the final itinerary in the browser |
+| **Git** | Version control | Source control throughout the project |
