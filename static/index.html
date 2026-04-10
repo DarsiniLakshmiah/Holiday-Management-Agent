@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Holiday Management Agent</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <!-- Markdown renderer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">✈</span>
+        <div>
+          <h1>Holiday Management Agent</h1>
+          <p>Plan your perfect trip with AI</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="layout">
+
+    <!-- LEFT PANEL -->
+    <aside class="panel panel-left">
+      <div class="card">
+        <h2 class="card-title">Your Trip</h2>
+        <label for="trip-input" class="field-label">Describe your ideal holiday</label>
+        <textarea
+          id="trip-input"
+          class="trip-textarea"
+          placeholder="e.g. 7-day trip to Japan focusing on anime culture, street food, and modern city life. Budget is moderate."
+          rows="6"
+        ></textarea>
+
+        <button id="plan-btn" class="btn-primary" onclick="startPlanning()">
+          <span class="btn-icon">✦</span> Plan My Trip
+        </button>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="card" id="progress-card" style="display:none">
+        <h2 class="card-title">Agent Progress</h2>
+        <ul class="progress-list">
+          <li class="progress-item" id="step-planner">
+            <div class="step-dot"></div>
+            <div class="step-info">
+              <span class="step-name">Planner</span>
+              <span class="step-desc">Building skeleton itinerary</span>
+            </div>
+          </li>
+          <li class="progress-connector"></li>
+          <li class="progress-item" id="step-researcher">
+            <div class="step-dot"></div>
+            <div class="step-info">
+              <span class="step-name">Researcher</span>
+              <span class="step-desc">Verifying facts & details</span>
+            </div>
+          </li>
+          <li class="progress-connector"></li>
+          <li class="progress-item" id="step-writer">
+            <div class="step-dot"></div>
+            <div class="step-info">
+              <span class="step-name">Writer</span>
+              <span class="step-desc">Composing travel guide</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL -->
+    <section class="panel panel-right">
+
+      <!-- PLACEHOLDER -->
+      <div class="placeholder" id="placeholder">
+        <div class="placeholder-icon">🗺️</div>
+        <h3>Your itinerary will appear here</h3>
+        <p>Enter your trip details on the left and click <strong>Plan My Trip</strong>.</p>
+      </div>
+
+      <!-- LIVE LOG -->
+      <div id="live-log" style="display:none">
+
+        <!-- Planner block -->
+        <div class="agent-block" id="block-planner" style="display:none">
+          <div class="agent-header planner-header">
+            <span class="agent-badge">1</span>
+            <span class="agent-label">Planner</span>
+            <span class="agent-status" id="status-planner">Working…</span>
+          </div>
+          <div class="agent-body" id="body-planner"></div>
+        </div>
+
+        <!-- Researcher block -->
+        <div class="agent-block" id="block-researcher" style="display:none">
+          <div class="agent-header researcher-header">
+            <span class="agent-badge">2</span>
+            <span class="agent-label">Researcher</span>
+            <span class="agent-status" id="status-researcher">Working…</span>
+          </div>
+          <div class="agent-body" id="body-researcher"></div>
+        </div>
+
+        <!-- Writer block -->
+        <div class="agent-block" id="block-writer" style="display:none">
+          <div class="agent-header writer-header">
+            <span class="agent-badge">3</span>
+            <span class="agent-label">Writer</span>
+            <span class="agent-status" id="status-writer">Working…</span>
+          </div>
+          <div class="agent-body" id="body-writer"></div>
+        </div>
+
+        <!-- Error -->
+        <div id="error-block" class="error-block" style="display:none"></div>
+      </div>
+
+      <!-- FINAL ITINERARY -->
+      <div id="final-section" style="display:none">
+        <div class="final-header">
+          <h2 class="final-title">Your Itinerary</h2>
+          <button class="btn-download" id="download-btn" onclick="downloadItinerary()">
+            ⬇ Download .md
+          </button>
+        </div>
+        <div class="final-card markdown-body" id="final-output"></div>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
